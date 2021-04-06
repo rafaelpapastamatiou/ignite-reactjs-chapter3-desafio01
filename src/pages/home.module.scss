@@ -1,1 +1,82 @@
-// TODO
+.posts {
+  list-style: none;
+
+  > a {
+    display: block;
+    transition: filter 0.2s;
+
+    & + a {
+      margin-top: 3rem;
+    }
+
+    &:hover {
+      cursor: pointer;
+      filter: brightness(0.8);
+      > span:first-of-type {
+        color: var(--highlight);
+      }
+    }
+
+    > span:first-of-type {
+      color: var(--heading);
+      font-size: 1.75rem;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+
+    > span:last-of-type {
+      margin-top: 0.5rem;
+      display: block;
+      font-weight: 400;
+      font-size: 1.125rem;
+      color: var(--body);
+    }
+
+    > div.postFooter {
+      margin-top: 1.5625rem;
+      display: flex;
+      align-items: center;
+      color: var(--body);
+
+      > div {
+        display: flex;
+        align-items: center;
+
+        & + div {
+          margin-left: 2rem;
+        }
+
+        svg {
+          transform: scale(1.125);
+        }
+
+        > span {
+          margin-left: 0.5rem;
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
+}
+
+.loadMore {
+  margin-top: 3.5rem;
+  background-color: transparent;
+  border: none;
+  color: var(--highlight);
+  font-weight: 600;
+  font-size: 1.125rem;
+
+  transition: filter 0.2s;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+}
+
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 170px;
+}

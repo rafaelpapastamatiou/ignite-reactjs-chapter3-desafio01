@@ -1,1 +1,10 @@
 // TODO
+.header {
+  height: 105px;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
