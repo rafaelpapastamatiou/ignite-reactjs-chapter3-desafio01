@@ -25,6 +25,7 @@ import { ExitPreviewButton } from '../../components/ExitPreviewButton';
 interface Post {
   uid?: string;
   first_publication_date: string | null;
+  last_publication_date: string | null;
   data: {
     title: string;
     banner: {
@@ -50,11 +51,21 @@ interface PostProps {
 export default function Post({ post, prevPost, nextPost, preview }: PostProps) {
   const router = useRouter();
 
-  const publicationDate = useMemo(() => {
+  const createdAt = useMemo(() => {
     return format(new Date(post.first_publication_date), 'dd MMM yyyy', {
       locale: ptBR,
     });
   }, [post.first_publication_date]);
+
+  const updatedAt = useMemo(() => {
+    return format(
+      new Date(post.last_publication_date),
+      `dd MMM yyyy', às 'HH:mm`,
+      {
+        locale: ptBR,
+      }
+    );
+  }, [post.last_publication_date]);
 
   const estimatedReadTime = useMemo(() => {
     const numberOfWords = post.data.content.reduce((acc, next) => {
@@ -84,7 +95,7 @@ export default function Post({ post, prevPost, nextPost, preview }: PostProps) {
             <div className={styles.postFooter}>
               <div>
                 <FiCalendar />
-                <span>{publicationDate}</span>
+                <span>{createdAt}</span>
               </div>
               <div>
                 <FiUser />
@@ -95,6 +106,7 @@ export default function Post({ post, prevPost, nextPost, preview }: PostProps) {
                 <span>{estimatedReadTime} min</span>
               </div>
             </div>
+            {updatedAt && <span>* editado em {updatedAt}</span>}
           </header>
           {post.data.content.map(section => (
             <section key={section.heading}>
