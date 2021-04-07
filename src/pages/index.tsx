@@ -15,6 +15,7 @@ import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
+import { ExitPreviewButton } from '../components/ExitPreviewButton';
 
 interface Post {
   uid?: string;
@@ -33,9 +34,13 @@ interface PostPagination {
 
 interface HomeProps {
   postsPagination: PostPagination;
+  preview: boolean;
 }
 
-export default function Home({ postsPagination }: HomeProps): ReactElement {
+export default function Home({
+  postsPagination,
+  preview,
+}: HomeProps): ReactElement {
   const { results, next_page } = postsPagination;
 
   const [nextPage, setNextPage] = useState<string>();
@@ -107,16 +112,21 @@ export default function Home({ postsPagination }: HomeProps): ReactElement {
             Carregar mais posts
           </button>
         )}
+        {preview && <ExitPreviewButton />}
       </main>
     </>
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<HomeProps> = async ({
+  preview = false,
+  previewData,
+}) => {
   const prismic = getPrismicClient();
   const postsResponse = await prismic.query(
     [Prismic.predicates.at('document.type', 'post')],
     {
+      ref: previewData?.ref ?? null,
       fetch: [
         'post.title',
         'post.subtitle',
@@ -125,6 +135,7 @@ export const getStaticProps: GetStaticProps = async () => {
         'post.content',
       ],
       pageSize: 1,
+      orderings: '[my.post.first_publication_date]',
     }
   );
 
@@ -134,6 +145,7 @@ export const getStaticProps: GetStaticProps = async () => {
         results: postsResponse.results,
         next_page: postsResponse.next_page,
       },
+      preview,
     },
   };
 };
